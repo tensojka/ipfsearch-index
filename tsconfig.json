@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "sourceMap": false,
+        "isolatedModules": true,
+        "module": "commonjs",
+        "watch": true,
+        "types": ["node"]
+    },
+    "include": [
+        "./*"
+    ]
+}
