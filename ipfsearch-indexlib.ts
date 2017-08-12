@@ -1,10 +1,20 @@
 export class Indexer{
-    invertedindex : Array<Token> //no point in saving this as Map
+    invertedindex : Array<Token> //no point in saving this as Map now. Map is used after unpack only.
     index : Array<Document>
 
     constructor(){
         this.invertedindex = []
         this.index = []
+    }
+
+    persist(invinxFilename : string, indexFilename : string, blocksize? : number){
+        if(blocksize === undefined){
+            let sortedindex = sortInvertedIndex(this.invertedindex)
+            saveInvertedIndexToFile(sortedindex, invinxFilename)
+
+            // may choke on large indices
+            fs.writeFile(indexFilename, JSON.stringify(sortIndex(this.index)), function(){console.debug("Index persisted.")})
+        }
     }
 
     /**
