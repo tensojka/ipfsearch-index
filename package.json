@@ -5,7 +5,6 @@
     "author": "Ondrej Sojka",
     "license": "ISC",
     "dependencies": {
-        "csv-parse": "^1.2.1",
         "should": "^11.2.1"
     },
     "scripts": {
@@ -20,6 +19,12 @@
         "typescript": "^2.3.4"
     },
     "files": [
-        "ipfsearch-indexlib.ts"
-    ]
+        "ipfsearch-indexlib.js",
+        "ipfsearch-indexlib.d.ts",
+        "README.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hoschiCZ/ipfsearch-index"
+    }
 }

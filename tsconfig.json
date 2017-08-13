@@ -2,9 +2,11 @@
     "compilerOptions": {
         "target": "esnext",
         "sourceMap": false,
-        "isolatedModules": true,
+        //"isolatedModules": true,
+        "alwaysStrict": true,
         "module": "commonjs",
-        "watch": true
+        "watch": true,
+        "declaration": true
     },
     "include": [
         "./*"

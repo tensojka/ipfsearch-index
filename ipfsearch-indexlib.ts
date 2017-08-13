@@ -293,6 +293,6 @@ export function loadIndexFromFile(filename : string, callback : IndexCallback) :
     })
 }
 
-interface IndexCallback {
+export interface IndexCallback {
     ( index : Array<Token>) : void;
 }
