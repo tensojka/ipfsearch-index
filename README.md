@@ -1,13 +1,5 @@
 ipfsearch-index generates index and inverted index for use by ipfsearch-webapp.
 
-# Building and installation
-
-```
-$ npm install 
-$ node_modules/typescript/bin/tsc -p tsconfig.json --watch false
-$ 
-```
-
 # Usage
 ```
 import * as ipfsearch from "ipfsearch-indexlib"
@@ -18,4 +10,13 @@ indexer.addToIndex(new ipfsearch.Document("Javascript","A language that was hack
 
 
 indexer.persist("assets/sortedindex.inx", "assets/index.inx")
+```
+
+# Building
+
+Clone this repo and run:
+
+```
+$ npm install
+$ node_modules/typescript/bin/tsc -p tsconfig.json
 ```
