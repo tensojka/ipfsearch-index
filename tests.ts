@@ -1,22 +1,7 @@
-const assert = require('assert');
-const should = require('should');
-let ipfsearch = require('./ipfsearch-indexlib')
+import * as assert from "assert"
+import * as should from "should"
+const ipfsearch = require('./ipfsearch-indexlib')
 const fs = require("fs")
-
-
-//USAGE EXAMPLES, OPTIMIZED FOR HUMAN READING:
-describe('Simple usage', function(){
-    it('create index and save it', function(){
-        let indexer = new ipfsearch.Indexer()
-        indexer.addToIndex(new ipfsearch.Document("Python","A great, nice programming language. Super user-friendly."))
-        indexer.addToIndex(new ipfsearch.Document("Javascript","A language that was hacked together in 14 days and ECMA is trying to make it better. Still feels hacked together tho"))
-        //add more docs...
-        
-        indexer.persist("assets/sortedindex.inx", "assets/index.inx", function(){})
-    })
-})
-
-
 
 
 describe('Unit tests', function(){
@@ -33,18 +18,18 @@ describe('Unit tests', function(){
         assert.notEqual(tokens.indexOf("hello"), -1)
 
         tokens = ipfsearch.tokenizeAndFilter("A great, nice programming language. Super user-friendly.")
-        tokens.should.containEql("great")
-        tokens.should.containEql("nice")
-        tokens.should.containEql("program")
-        tokens.should.containEql("languag")
-        tokens.should.containEql("super")
-        tokens.should.containEql("user")
-        tokens.should.containEql("friendli")
+        should(tokens).containEql("great")
+        should(tokens).containEql("nice")
+        should(tokens).containEql("program")
+        should(tokens).containEql("languag")
+        should(tokens).containEql("super")
+        should(tokens).containEql("user")
+        should(tokens).containEql("friendli")
     })
 })
 
 function isTokenInIndex(invinx, name){
-    for(token of invinx){
+    for(let token of invinx){
         if(token.name === name){
             return true
         }
