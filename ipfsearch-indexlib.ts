@@ -17,12 +17,6 @@ export class Indexer{
         }
     }
 
-    /**
-     * Add a given document to the given index.
-     * @param index 
-     * @param token 
-     * @param documentid 
-     */
     private addDocumentToInvertedIndex(document : Document){
         tokenizeAndFilter(document.getText()).forEach(function(tokenname : string) {
             this.addTokenToInvertedIndex(new Token(tokenname,[document.id]))
@@ -121,8 +115,14 @@ export class Token{
         this.documents = documents
     }
 
+    /**
+     * Add a document to the token. Silently doesn't add a duplicit one.
+     * @param documentid 
+     */
     addDocument(documentid : string){
-        this.documents.push(documentid)
+        if(this.documents.indexOf(documentid) === -1){
+            this.documents.push(documentid)
+        }
     }
 
     toString(){
@@ -135,9 +135,10 @@ export class Token{
  * Represents a document in the index. 
  * Subclass this if you require specific fields and override getText method to return all text that should get indexed.
  * id will be used for sorting when breaking it up.
+ * @param id should be UNIQUE across the whole index.
  */
 export class Document{
-    id : string
+    id : string 
     text : string
 
     constructor(id : string,text : string){
