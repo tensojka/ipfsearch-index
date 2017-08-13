@@ -23,6 +23,7 @@
         "ipfsearch-indexlib.d.ts",
         "README.md"
     ],
+    "main": "ipfsearch-indexlib",
     "repository": {
         "type": "git",
         "url": "https://github.com/hoschiCZ/ipfsearch-index"
