@@ -7,8 +7,5 @@
         "module": "commonjs",
         "watch": true,
         "declaration": true
-    },
-    "include": [
-        "./**"
-    ]
+    }
 }

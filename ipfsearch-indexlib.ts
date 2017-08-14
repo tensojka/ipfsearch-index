@@ -1,19 +1,27 @@
 export class Indexer{
     invertedindex : Map<string,Token>
-    index : Array<Document>
+    index : Map<string,Document> //maps docid to whole doc
 
     constructor(){
         this.invertedindex = new Map()
-        this.index = []
+        this.index = new Map()
     }
 
+    /**
+     * 
+     * @param invinxFilename relative to cwd
+     * @param indexFilename relative to cwd
+     * @param blocksize If you don't provide a blocksize, files won't be split up.
+     */
     persist(invinxFilename : string, indexFilename : string, blocksize? : number){
         if(blocksize === undefined){
-            let sortedindex = sortInvertedIndex(mapIndextoArray(this.invertedindex))
+            let sortedindex = sortInvertedIndex(mapToArray(this.invertedindex))
             saveInvertedIndexToFile(sortedindex, invinxFilename)
 
             // may choke on large indices
-            fs.writeFile(indexFilename, JSON.stringify(sortIndex(this.index)), function(){console.debug("Index persisted.")})
+            fs.writeFileSync(indexFilename, JSON.stringify(sortIndex(mapToArray(this.index))))
+        }else{
+
         }
     }
 
@@ -39,11 +47,7 @@ export class Indexer{
      * @param document 
      */
     addToIndex(document : Document){
-        if(this.index.indexOf(document) === -1){
-            this.index.push(document)
-        }else{
-            throw "Document already in index"
-        }
+        this.index.set(document.id, document)
         this.addDocumentToInvertedIndex(document)
     }
 }
@@ -190,14 +194,14 @@ export function sortIndex(index : Array<Document>) : Array<Document>{
 }
 
 
-export function mapIndextoArray(map : Map<string,Token>) : Array<Token>{
-    let array : Array<Token> = []
-    for(let key in map){
-        if(map.hasOwnProperty(key)){
-            if(map[key] != null){
-                array.push(map[key])
-            }
-        }
+/**
+ * Put all values from a Map into an Array.
+ * @param map 
+ */
+export function mapToArray(map : Map<string,any>) : Array<any>{
+    let array = []
+    for(let key of map.values()){
+        array.push(key)
     }
     return array
 }
