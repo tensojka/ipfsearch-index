@@ -1,3 +1,5 @@
+import * as fs from "fs"
+
 export class Indexer{
     invertedindex : Map<string,Token>
     index : Map<string,Document> //maps docid to whole doc
@@ -10,10 +12,10 @@ export class Indexer{
     /**
      * 
      * @param invinxFilename relative to cwd
-     * @param indexFilename relative to cwd
+     * @param indexFilename relative to cwd. If blocksize set, will be appended by number.
      * @param blocksize If you don't provide a blocksize, files won't be split up.
      */
-    persist(invinxFilename : string, indexFilename : string, blocksize? : number){
+    persist(invinxFilename : string, indexFilename : string, author : string, indexname : string, blocksize? : number){
         if(blocksize === undefined){
             let sortedindex = sortInvertedIndex(mapToArray(this.invertedindex))
             saveInvertedIndexToFile(sortedindex, invinxFilename)
@@ -21,7 +23,28 @@ export class Indexer{
             // may choke on large indices
             fs.writeFileSync(indexFilename, JSON.stringify(sortIndex(mapToArray(this.index))))
         }else{
+            let indexsplits = saveIndexToFiles(sortIndex(mapToArray(this.index)),indexFilename,blocksize)
 
+            let invinxsplitmap : Array<string> = []
+            let invinx = sortInvertedIndex(mapToArray(this.invertedindex))
+            for(let needle = 0; needle < invinx.length; needle++){
+                if(needle % blocksize == 0){
+                    invinxsplitmap.push(invinx[needle].name)
+                }
+            }
+        
+            for(let needle = 0; needle < invinxsplitmap.length; needle++){
+                console.debug("saving index #"+needle+", starts with "+invinxsplitmap[needle])
+                saveInvertedIndexToFile(invinx.slice(blocksize*needle, blocksize*(needle+1)), invinxFilename + needle)
+            }
+            let meta = {
+                author : author,
+                name : indexname,
+                created : Date.now(),
+                indexsplits : indexsplits,
+                invsplits : invinxsplitmap
+            }
+            fs.writeFile(indexFilename+".meta.json",JSON.stringify(meta), (err) => {if(err){console.error(err)}})
         }
     }
 
@@ -206,13 +229,14 @@ export function mapToArray(map : Map<string,any>) : Array<any>{
     return array
 }
 
+
 /**
  * Save index to files, breaking it up.
  * @param index 
  * @param filenamestub 
  * @param blocksize How many documents to store in one file
  */
-export function saveIndexToFiles(index : Array<Document>, filenamestub : string, blocksize : number){
+export function saveIndexToFiles(index : Array<Document>, filenamestub : string, blocksize : number) : string[]{
     let splitmap : string[] = []
     for(let needle = 0; needle < index.length; needle++){
         if(needle % blocksize == 0){
@@ -222,19 +246,19 @@ export function saveIndexToFiles(index : Array<Document>, filenamestub : string,
 
     for(let needle = 0; needle < splitmap.length; needle++){
         //console.debug("saving index #"+needle+", starts with "+splitmap[needle])
-        saveIndexToFile(index.slice(blocksize*needle, blocksize*(needle+1)), "assets/part/" + needle)
+        saveIndexToFile(index.slice(blocksize*needle, blocksize*(needle+1)), filenamestub + needle)
     }
+    return splitmap
 }
 
-const fs = require('fs');
 
 /**
- * Intended to be used with saveIndexToFiles()
+ * Intended to be used by saveIndexToFiles()
  * @param index 
  * @param filename 
  */
 function saveIndexToFile(index : Array<Document>, filename : string){
-    fs.writeFile(filename,JSON.stringify(index))
+    fs.writeFile(filename,JSON.stringify(index), (err) => {if(err){console.error(err)}})
 }
 
 

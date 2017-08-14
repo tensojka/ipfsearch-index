@@ -15,7 +15,7 @@ describe('API', function(){
     it('persist', function(){
         let indexer = new ipfsearch.Indexer()
         indexer = addExampleData(indexer)
-        indexer.persist("assets/test/invinx","assets/test/inx")
+        indexer.persist("assets/test/invinx","assets/test/inx", "ipfsearch-index tests", "test items")
         let saved = ipfsearch.mapToArray(indexer.index) 
         ipfsearch.loadIndexFromFile(fs.readFileSync("assets/test/invinx", 'utf-8'), function(loaded){
             assert.equal(saved, loaded)
