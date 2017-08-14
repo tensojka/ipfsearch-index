@@ -1,15 +1,15 @@
 export class Indexer{
-    invertedindex : Array<Token> //no point in saving this as Map now. Map is used after unpack only.
+    invertedindex : Map<string,Token>
     index : Array<Document>
 
     constructor(){
-        this.invertedindex = []
+        this.invertedindex = new Map()
         this.index = []
     }
 
     persist(invinxFilename : string, indexFilename : string, blocksize? : number){
         if(blocksize === undefined){
-            let sortedindex = sortInvertedIndex(this.invertedindex)
+            let sortedindex = sortInvertedIndex(mapIndextoArray(this.invertedindex))
             saveInvertedIndexToFile(sortedindex, invinxFilename)
 
             // may choke on large indices
@@ -24,15 +24,14 @@ export class Indexer{
     }
 
     private addTokenToInvertedIndex(token : Token){
-        for(let i = 0; i < this.invertedindex.length ;i++){
-            if(this.invertedindex[i].name === token.name){
-                token.documents.forEach((docid) => {
-                    this.invertedindex[i].addDocument(docid)
-                })
-                return
-            }
+        if(this.invertedindex.has(token.name)){
+            token.documents.forEach((docid) => {
+                this.invertedindex.get(token.name).addDocument(docid)
+            })
+            
+        }else{
+            this.invertedindex.set(token.name, token)
         }
-        this.invertedindex.push(token)
     }
 
     /**
@@ -191,7 +190,7 @@ export function sortIndex(index : Array<Document>) : Array<Document>{
 }
 
 
-export function mapIndextoArray(map : { [token: string]: Token; }) : Array<Token>{
+export function mapIndextoArray(map : Map<string,Token>) : Array<Token>{
     let array : Array<Token> = []
     for(let key in map){
         if(map.hasOwnProperty(key)){
