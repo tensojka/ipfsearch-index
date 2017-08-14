@@ -8,8 +8,7 @@ describe('Unit tests', function(){
     it('added document is in index', function(){
         let indexer = new ipfsearch.Indexer()
         indexer.addToIndex(new ipfsearch.Document("Hello", "hello, it's me."))
-        assert.equal(isTokenInIndex(indexer.invertedindex,"hello"), true)
-        assert.notEqual(isTokenInIndex(indexer.invertedindex,"me"), true)
+        assert.ok(indexer.invertedindex.has("hello"))
     })
 
     it('tokenization and filtering', function(){
@@ -27,11 +26,3 @@ describe('Unit tests', function(){
         should(tokens).containEql("friendli")
     })
 })
-
-function isTokenInIndex(invinx, name){
-    for(let token of invinx){
-        if(token.name === name){
-            return true
-        }
-    }
-}
