@@ -4,19 +4,18 @@
     "description": "Index generation for ipfsearch",
     "author": "Ondrej Sojka",
     "license": "ISC",
-    "dependencies": {
-        "should": "^11.2.1"
-    },
+    "dependencies": {},
     "scripts": {
         "test": "mocha tests.js"
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.41",
-        "@types/node": "^7.0.29",
-        "@types/should": "^8.3.0",
         "@types/assert": "0.0.31",
-        "mocha": "^3.5.0",
-        "typescript": "^2.3.4"
+        "@types/mocha": "^2.2.43",
+        "@types/node": "^7.0.43",
+        "@types/should": "^8.3.0",
+        "mocha": "^3.5.3",
+        "typescript": "^2.5.2",
+        "should": "^11.2.1"
     },
     "files": [
         "ipfsearch-indexlib.js",
