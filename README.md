@@ -9,7 +9,7 @@ indexer.addToIndex(new ipfsearch.Document("Javascript","A language that was hack
 //add more docs...
 
 
-indexer.persist("assets/sortedindex.inx", "assets/index.inx")
+indexer.persist("assets/sortedindex.inx", "assets/index.inx","authors name","index name")
 ```
 
 # Building

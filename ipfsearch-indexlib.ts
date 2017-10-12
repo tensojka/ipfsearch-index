@@ -10,12 +10,14 @@ export class Indexer{
     }
 
     /**
-     * 
-     * @param invinxFilename relative to cwd
+     * Saves invinx and inx to cwd, and 
+     * @param invinxFilename relative to cwd. If blocksize set, will be appended by number.
      * @param indexFilename relative to cwd. If blocksize set, will be appended by number.
+     * @param baseURL the start of the URL for invinxFilename and indexFilename.
+     * The meta.json file will be placed in indexFilename + ".meta.json"
      * @param blocksize If you don't provide a blocksize, files won't be split up.
      */
-    persist(invinxFilename : string, indexFilename : string, author : string, indexname : string, blocksize? : number){
+    persist(invinxFilename : string, indexFilename : string, author : string, indexname : string, baseURL : string, blocksize? : number){
         if(blocksize === undefined){
             let sortedindex = sortInvertedIndex(mapToArray(this.invertedindex))
             saveInvertedIndexToFile(sortedindex, invinxFilename)
@@ -41,7 +43,9 @@ export class Indexer{
                 author : author,
                 name : indexname,
                 created : Date.now(),
-                indexsplits : indexsplits,
+                invURLBase : baseURL + invinxFilename,
+                inxURLBase : baseURL + indexFilename,
+                inxsplits : indexsplits,
                 invsplits : invinxsplitmap
             }
             fs.writeFile(indexFilename+".meta.json",JSON.stringify(meta), (err) => {if(err){console.error(err)}})
