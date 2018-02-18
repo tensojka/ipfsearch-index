@@ -15,12 +15,12 @@ describe('API', function(){
     it('persist', function(){
         let indexer = new ipfsearch.Indexer()
         indexer = addExampleData(indexer)
-        indexer.persist("assets/test/invinx","assets/test/inx", "ipfsearch-index tests", "test items")
+        indexer.persist("assets/test/invinx","assets/test/inx", "ipfsearch-index test runner", "test items","ipfs://",1000)
         let saved = ipfsearch.mapToArray(indexer.index) 
-        ipfsearch.loadIndexFromFile(fs.readFileSync("assets/test/invinx", 'utf-8'), function(loaded){
+        ipfsearch.loadIndexFromFile(fs.readFileSync("assets/test/invinx0", 'utf-8'), function(loaded){
             assert.equal(saved, loaded)
         })
-
+        assert.ok(fs.existsSync("assets/test/inx.meta.json"))
 
     })
 })

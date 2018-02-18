@@ -20,3 +20,6 @@ Clone this repo and run:
 $ npm install
 $ node_modules/typescript/bin/tsc -p tsconfig.json
 ```
+
+# Test index
+The meta.json for the files has been generated and saved to ipfs at QmUFVKRPGsGUziEydsic91GfuDzJTjXdoxSiv9dHjutv1g. It references another ipfs directory that contains the generated invinx and inx.
