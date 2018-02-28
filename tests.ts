@@ -12,13 +12,14 @@ describe('API', function(){
         assert.ok(indexer.index.has("Hello"))
     })
 
-    it('persist', function(){
+    it('persist', function(done){
         let indexer = new ipfsearch.Indexer()
         indexer = addExampleData(indexer)
         indexer.persist("assets/test/invinx","assets/test/inx", "ipfsearch-index test runner", "test items","ipfs://",1000)
-        let saved = ipfsearch.mapToArray(indexer.index) 
-        ipfsearch.loadIndexFromFile(fs.readFileSync("assets/test/invinx0", 'utf-8'), function(loaded){
-            assert.equal(saved, loaded)
+        let saved = ipfsearch.sortInvertedIndex(ipfsearch.mapToArray(indexer.invertedindex))
+        ipfsearch.loadIndexFromFile("assets/test/invinx0", function(loaded){
+            should(loaded.length).equal(saved.length)
+            done()
         })
         assert.ok(fs.existsSync("assets/test/inx.meta.json"))
 
@@ -41,13 +42,25 @@ describe('insides',function(){
         should(tokens).containEql("friendli")
     })
 
-    it('persisting',function(){
+    it('adding to index',function(){
         let indexer = new ipfsearch.Indexer()
         indexer = addExampleData(indexer)
         let sortedindex = ipfsearch.mapToArray(indexer.index)
         should(sortedindex.length).equal(3)
-        //should(sortedindex).containEql(new ipfsearch.Document("Pear","A very juicy fruit with cinnamon spices."))
+        should(sortedindex).containEql(new ipfsearch.Document("Pear","A very juicy fruit with cinnamon spices."))
 
+    })
+
+    it('document with a comma in name doesnt confuse the invinx format', function(done){
+        let indexer = new ipfsearch.Indexer()
+        indexer = addExampleData(indexer)
+        indexer.addToIndex(new ipfsearch.Document("Mango,1999","A fruit that causes problems very often, especially with a comma ;)"))
+        indexer.persist("assets/test/invinx","assets/test/inx", "ipfsearch-index test runner", "test items","ipfs://",1000)
+        ipfsearch.loadIndexFromFile("assets/test/invinx0", function(loaded){
+            should(loaded).not.containEql(new ipfsearch.Token("problem",["Mango","1999"]))
+            should(loaded).containEql(new ipfsearch.Token("problem",["Mango,1999"]))
+            done()
+        })
     })
 })
 

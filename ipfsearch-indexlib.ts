@@ -289,6 +289,7 @@ export function saveInvertedIndexToFile(invindex: Array<Token>, filename: string
     invindex.forEach(function(token){
         let string = encodeURIComponent(token.name)
         for(let docid of token.documents){
+            docid = docid.replace(",","%2C")
             string = string + "," + docid
         }
         writeStream.write(string + "\n")
@@ -296,6 +297,11 @@ export function saveInvertedIndexToFile(invindex: Array<Token>, filename: string
 }
 
 
+/**
+ * Load inverted index from file
+ * @param filename
+ * @param callback 
+ */
 export function loadIndexFromFile(filename : string, callback : IndexCallback) : void {
 
     let loadedIndex : Array<Token> = []
@@ -314,6 +320,9 @@ export function loadIndexFromFile(filename : string, callback : IndexCallback) :
         }
 
         let cols = line.split(",")
+        cols = cols.map(function(value){
+            return value.replace("%2C",",")
+        })
         let tokenname = decodeURIComponent(cols[0])
         cols.shift()
         loadedIndex.push(new Token(tokenname, cols))
