@@ -1,6 +1,6 @@
 {
     "name": "ipfsearch-index",
-    "version": "1.2.0",
+    "version": "2.3.0",
     "description": "Index generation for ipfsearch",
     "author": "Ondrej Sojka",
     "license": "ISC",
@@ -24,7 +24,7 @@
         "porterstemmer.js"
     ],
     "main": "./ipfsearch-indexlib.js",
-    "types": "./ipfsearch-indexlib.ts",
+    "types": "./ipfsearch-indexlib.ts.d",
     "repository": {
         "type": "git",
         "url": "https://github.com/hoschiCZ/ipfsearch-index"

@@ -312,8 +312,8 @@ export function loadIndexFromFile(filename : string, callback : IndexCallback) :
     let lineNumber = 0
     lineReader.on('line', (line : string) => {
         if(lineNumber === 0){
-            if(parseInt(line) != 1){
-                throw "Invalid version, must be 1!"
+            if(parseInt(line) != 2){
+                throw "Invalid version, must be 2!"
             }
             lineNumber++
             return
