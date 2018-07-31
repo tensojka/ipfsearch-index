@@ -106,22 +106,13 @@ import * as stemmer from "./porterstemmer.js"
  * @param text 
  * @param separators? optional by what chars to split the string while tokenizing
  */
-export function tokenizeAndFilter(text : string, separators? : Array<string>) : string[]{
-    text = text.toLowerCase().trim()
-    if(separators === undefined){
-        separators = [".","-",",","_","'","(",")","[","]","{","}","&","!",'"']
-    }
-    separators.forEach((c) => {
-        text = replaceAll(text,c," ")
-    })
-    let tokens = text
-        .split(' ')
-        .map(function(token) { return stemmer.stemmer(token)})
+export function tokenizeAndFilter(name : string) : string[]{
+    let tokens : string[] = name.split(' ').join(',').split('.').join(',').split('(').join(',').split(')').join(',').split('-').join(',').split('_').join(',').split(',') // super super awful and nasty, but gets the job done.
     tokens = tokens.filter(function (token){
         if(token){
-            if(token.toLowerCase() === "the" || token.toLowerCase() === "and" || token === "&" || token === "+"){
+            if(token.toLowerCase() === "the" || token.toLowerCase() === "of" || token.toLowerCase() === "and" || token === "&" || token === "+"){
                 return false
-            }else if(token.length <= 2){
+            }else if(token.length <= 1){
                 return false
             }else if(token.startsWith("&") && token.indexOf(';') > -1){
                 return false
@@ -132,8 +123,9 @@ export function tokenizeAndFilter(text : string, separators? : Array<string>) : 
             return false
         }
     })
+    tokens.forEach((value,index,array) => {array[index] = value.toLowerCase()})
+    tokens.forEach((value,index,array) => {array[index] = stemmer.stemmer(value)})
     return tokens
-    
 }
 
 
