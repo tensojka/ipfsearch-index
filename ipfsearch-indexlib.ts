@@ -107,7 +107,7 @@ import * as stemmer from "./porterstemmer.js"
  * @param separators? optional by what chars to split the string while tokenizing
  */
 export function tokenizeAndFilter(name : string) : string[]{
-    let tokens : string[] = name.split(' ').join(',').split('.').join(',').split('(').join(',').split(')').join(',').split('-').join(',').split('_').join(',').split(',') // super super awful and nasty, but gets the job done.
+    let tokens : string[] = name.split(' ').join(',').split('.').join(',').split('(').join(',').split(')').join(',').split('-').join(',').split('_').join(',').split(',').join('[').split(',').join(']').split(',') // super super awful and nasty, but gets the job done.
     tokens = tokens.filter(function (token){
         if(token){
             if(token.toLowerCase() === "the" || token.toLowerCase() === "of" || token.toLowerCase() === "and" || token === "&" || token === "+"){
