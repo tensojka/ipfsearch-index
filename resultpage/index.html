@@ -1,0 +1,22 @@
+<head>
+    <script src="vue.2.5.17.min.js"></script>
+    <script src="vue-bootstrap-table.min.js"></script> <!--https://github.com/jbaysolutions/vue-bootstrap-table-->
+</head>
+
+<body>
+<div id="app" width="100%">
+    <h3 v-if="resultsFound">Results</h3>
+    <vue-bootstrap-table
+        :columns="columns"
+        :values="values"
+        :show-filter="false"
+        :show-column-picker="false"
+        :sortable="true"
+        :multi-column-sortable=true
+        :paginated="false"
+        :filter-case-sensitive=false
+    >
+    </vue-bootstrap-table>
+</div>
+<script src="main.js"></script>
+</body>
